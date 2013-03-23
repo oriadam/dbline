@@ -2,8 +2,8 @@
 /***
 	File: dbline.php
 	License: GPLv3
-	Repo: https://github.com/oriadam/dbline	
-	
+	Repo: https://github.com/oriadam/dbline
+
 	DBLine main file.
 	DBLine is a quick web interface tool to MySQL DB for sql commands and queries.
 	It supports all sql commands that your db allows you to.
@@ -69,14 +69,14 @@ if ($cfg['xor']) {
 			}
 			return res;
 		}
-		
+
 		String.prototype.safexor = function(keyhex)
 		{
 			var b='0123456789ABCDEF';
 			var res="";
 			if (typeof(keyhex)!='string' || keyhex=='') return null;
 			while(keyhex.length<this.length*2)	keyhex+=keyhex;
-			
+
 			var z=this.length;
 			for(var i=0;i<z;i++)
 			{
@@ -87,7 +87,7 @@ if ($cfg['xor']) {
 			}
 			return res;
 		}
-		
+
 		String.prototype.safeunxor = function(keyhex)
 		{
 			var out='';
@@ -100,13 +100,13 @@ if ($cfg['xor']) {
 			}
 			return out;
 		}
-		
+
 		String.prototype.enc = function (key)
 		{
 			return this.safexor(key);
 			//return this.length+"|"+this.xor(key).encode64();
 		}
-		
+
 	</script>
 <?php
 }
@@ -117,7 +117,7 @@ function dec($s,$k=null) {
 	if (empty($k))	$k=$cfg['random'];
 	if (empty($k)) die('no random');
 	if (empty($s)) return $s;
-	
+
 	$out='';
 	while (strlen($k)<strlen($s)) $k.=$k;
 	$b='0123456789ABCDEF';
@@ -147,7 +147,7 @@ if (empty($cfg['passmd5'])) {
 			}
 			$cfg['random']=$_SESSION['rnd'];
 		}
-		
+
 		if (!empty($_SESSION['loginip']))
 			if ($_SESSION['loginip'] == $_SERVER['REMOTE_ADDR'])
 				$loggedin = true;
@@ -239,17 +239,16 @@ if (!$loggedin) {
 </head>
 <body>
 <?php
-	$onsubmit = "";
 	if ($cfg['xor']) {
-		$onsubmit .=" document.frm.txt.value = document.frm.thetext.value.toString().enc(xorkey); ";
+		$onsubmit ="document.frm.txt.value = document.getElementById('thetext').value.toString().enc(xorkey);";
 	} else {
-		$onsubmit .=" document.frm.txt.value = document.frm.thetext.value; ";
+		$onsubmit ='';
 	}
 ?>
 <form name="frm" method="POST" onsubmit="<?php echo $onsubmit; ?>" >
 <center>
-<input type="hidden" name="txt">
 <?php
+	if ($cfg['xor']) echo '<input type="hidden" name="txt">';
 	// define stripos when missing
 	if (!function_exists('stripos')){
 		function stripos($haystack,$needle,$offset=0){
@@ -259,9 +258,9 @@ if (!$loggedin) {
 
 	// free text
 	if ($cfg['freetext']) {
-		?><textarea class="txt" name="thetext" cols="3" style="width:90%"><?php echo $query; ?></textarea><?php
+		?><textarea <?=$cfg['xor']?'':'name="txt"'?> class="txt" id="thetext" cols="3" style="width:90%"><?php echo $query; ?></textarea><?php
 	}
-	
+
 	// title repeat
 	if (!isset($_POST['titlerepeat']) || !is_numeric($_POST['titlerepeat'])) {
 		$titlerepeat = 1; // default = once
@@ -276,7 +275,7 @@ if (!$loggedin) {
 	echo '</select>';
 
 	// output format
-	$formatoptions = array( 
+	$formatoptions = array(
 		'html' => 'HTML Table',
 		'csv' => 'CSV Comma separated values (,)',
 		'tsv' => 'Tab separated values (      )',
@@ -298,7 +297,7 @@ if (!$loggedin) {
 		echo "<option value=\"$option\" ".($option==$format?' selected checked ':'').">$text</option>";
 	}
 	echo '</select>';
-	
+
 	// preset queries
 	if (count($cfg['preset'])) {
 		echo ' <SELECT name="q"><option value="" selected>--preset commands--</option>';
@@ -309,7 +308,7 @@ if (!$loggedin) {
 		}
 		echo '</SELECT>';
 	}
-	
+
 	// show counter field column #
 	echo '<label><input type="checkbox" name="showCounter" '.($showCounter?'checked':'').' >Row counter</label>';
 
@@ -319,12 +318,12 @@ if (!$loggedin) {
 
 	// submit button
 	echo '<input type="submit">';
-	
+
 	echo '</form>';
 
 	// make sure a 'where' is included when necessary
 	if ($cfg['where'] && !empty($query)
-	&& ((stripos(trim($query),'select')===0 && stripos(trim($query),'from')>0) || stripos(trim($query),'update')===0 || stripos(trim($query),'delete')===0) 
+	&& ((stripos(trim($query),'select')===0 && stripos(trim($query),'from')>0) || stripos(trim($query),'update')===0 || stripos(trim($query),'delete')===0)
 	&& (stripos($query,'where')===false) ) {
 		$error = 'Please add a WHERE clause to your query';
 		$query = '';
@@ -366,10 +365,10 @@ if (!$loggedin) {
 			if ($format == 'html') {
 				$i = 0;
 				echo '<table>';
-				
+
 				// set title row in $th
 				$th = '<tr class="h">';
-				if ($showCounter) 
+				if ($showCounter)
 					$th.='<th>#</th>';
 				while ($i < mysql_num_fields($rows)) {
 					$meta = mysql_fetch_field($rows, $i);
@@ -419,7 +418,7 @@ if (!$loggedin) {
 				$alwaysq = false;
 
 				echo '<pre>';
-				
+
 				// set title row in $th
 				$th = '';
 				if ($showCounter)
