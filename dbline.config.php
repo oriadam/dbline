@@ -2,14 +2,13 @@
 /***
 	File: dbline.config.php
 	License: GPLv3
-	http://softov.org/webdevtools
-	http://code.google.com/p/dbline
+	Repo: https://github.com/oriadam/dbline	
 	
 	DBLine config file.
 	DBLine is a quick web interface tool to MySQL DB for sql commands and queries.
 	It supports all sql commands that your db allows you to.
 	For a full list of features, and for feature requests, go to
-	http://code.google.com/p/dbline
+	http://www.tablefield.com/dbline
 
 ***/
 
