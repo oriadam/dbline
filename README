@@ -1,7 +1,31 @@
-    DBLine is a simple basic web interface tool for MySQL DB for sql commands and queries.
-    It supports all sql commands that your db allows you to.
-    It is not phpMyAdmin, it only allows you to run plain sql commands and see "select" command results in a table/csv/xml.
-    For a full list of features, feature requests and co-coding go to:
+DBLine is a light weight PHP tool to access a MySQL database online.
+
+DBLine is like the phpMyAdmin feature called "SQL" - it gives you command-line access to the mysql database.
+A simple yet powerful (and potentially dangerous) interface for administrators.
+
+# Features
+Open Source
+Export to HTML, comma/semicolon/pipe/tab/space separated values
+Password protected
+Optionally force WHERE on SELECT/UPDATE/DELETE (explicitly write WHERE 1=1 for all rows)
+Just 2-files: main file, and config file. Just upload, configure and use
+You can set a preset list of canned SQL commands
+Optionally show serial row number
+Encrypt the SQL commands on POST
+Repeat title row every X rows
+
+# Planned features
+Optionally allow read-only commands, all commands, or specific commands
+Save result as
+Export to an XLS file
+Users and Groups
+Select from preset multiple databases
+Postgre support
+Log file
+Print the result in xml format
+Enter databases details from web browser
+Sister project - Backup mysql database with PHP
+
     
     License: GPLv3
     https://github.com/oriadam/dbline
